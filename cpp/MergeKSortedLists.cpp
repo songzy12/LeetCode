@@ -28,21 +28,18 @@ public:
 				heap_.push_back(lists[i]);
 		make_heap(heap_.begin(), heap_.end(), cmp); // max heap by default
 		while(!heap_.empty()){
-			pop_heap(heap_.begin(), heap_.end());
+			pop_heap(heap_.begin(), heap_.end(), cmp);// remember cmp
 			
-			for(int i=0; i<heap_.size(); ++i)
+			/*for(int i=0; i<heap_.size(); ++i)
 				cout<<heap_[i]->val<<" ";
-			cout<<endl;
+			cout<<endl;*/
 			
 			ListNode* temp = heap_[heap_.size()-1];
 			heap_.pop_back();
 			if(temp->next != NULL)
 				heap_.push_back(temp->next);
 			push_heap(heap_.begin(), heap_.end(), cmp);
-			for(int i=0; i<heap_.size(); ++i)
-				cout<<heap_[i]->val<<" ";
-			cout<<endl;
-
+			
 			head->next = temp;
 			head = head->next;
 		}
