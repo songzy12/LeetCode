@@ -14,6 +14,7 @@ class SummaryRanges(object):
     heapq.heappush(self.intervals, (val, Interval(val, val)))
 
   def getIntervals(self):
+    # merge intervals
     stack = []
     while self.intervals:
         idx, cur = heapq.heappop(self.intervals)
