@@ -5,9 +5,9 @@ class Solution:
         ans = 0
         bit = 1 << 16
         while bit:
-            ans |= bit
+            ans |= bit # set bit of ans to 1
             if ans*ans > x:
-                ans ^= bit
+                ans ^= bit # unset bit of ans to 0
             bit >>= 1
         return ans
     
