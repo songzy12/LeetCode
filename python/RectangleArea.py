@@ -1,3 +1,6 @@
+# Find the total area covered by two rectilinear rectangles in a 2D plane.
+# Each rectangle is defined by its bottom left corner and top right corner.
+
 class Solution:
     # @param {integer} A
     # @param {integer} B
