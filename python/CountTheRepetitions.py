@@ -64,3 +64,6 @@ print Solution().getMaxRepetitions(s1, n1, s2, n2)
 
 # there are totally (n1-i1))/(i2-i1) loops
 # before and after: (s1,(n1-i1)%(i2-i1)+i1)/s2
+# note this is not the same as: (s1,i1)/s2 + (s1,(n1-i1)%(i2-i1))/s2
+
+
