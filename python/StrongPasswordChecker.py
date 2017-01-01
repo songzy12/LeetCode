@@ -15,6 +15,35 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
+        length, repeat, types, i, j = len(s), [], [False]*4, 0, 1
+
+        while i < length:
+            while i+j < length and s[i+j] == s[i]: j += 1
+            if j >= 3: repeat += j,                     # get repeats
+            types[self.classifier(s[i])] = True         # check lower/upper/digit
+            i, j = i+j, 1
+
+        insert, delete, replace = 0, 0, 0
+        
+        if length < 6: insert = 6-length                # Case A.
+        
+        elif length > 20:   # Case B. Fix repeat by (replace+delete), should > all solve by replace
+            delete, allbydel = length-20, sum([r-2 for r in repeat])
+            if delete < allbydel:     # repeat solved by both delete and replace
+                replace = max(sum([r//3 for r in repeat])-delete, ((allbydel-delete)+2)//3)
+
+        else:               # Case C. fix repeat only by replace
+            for rp in repeat: replace += rp//3
+
+        # final check: if replace less than missing
+        return insert+delete+max(replace, types[:-1].count(False)-insert)
+
+    def classifier(self, c):
+        # types: 0 = lowercase, 1 = uppercase, 2 = digit, 3 = others (None of above)
+        if c.islower(): return 0
+        elif c.isupper(): return 1
+        elif c.isdigit(): return 2
+        else: return 3
         
 
 
