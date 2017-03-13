@@ -11,6 +11,9 @@ class Solution:
     # remember to check it when you get spare time >_<
 
     def maximalRectangle(self, matrix):
+        # this is the same as top voted solution
+        # except that this keeps a fixed right, then search up and down
+        # top voted solution keeps a fixed height, use dp for left and right
         if not matrix:
             return 0
         # here not bother to use else:

@@ -19,9 +19,11 @@ class Solution(object):
         if left == right - 1:
             self.dp[left][right] = 0
             return self.dp[left][right]
+        # instead of divide the problem by the first balloon to burst,
+        # we divide the problem by the last balloon to burst.
         for i in range(left+1, right):
             self.dp[left][right] = max(self.nums[left]*self.nums[i]*self.nums[right] +
-                                       self.compute(left, i) +self.compute(i, right),
+                                       self.compute(left, i) + self.compute(i, right),
                                        self.dp[left][right])
         return self.dp[left][right]
 
