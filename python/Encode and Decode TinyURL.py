@@ -12,7 +12,7 @@ class Codec:
             if code not in self.code2url:
                 self.code2url[code] = longUrl
                 self.url2code[longUrl] = code
-            return 'http://tinyurl.com/' + self.url2code[longUrl]
+        return 'http://tinyurl.com/' + self.url2code[longUrl]
 
     def decode(self, shortUrl):
         return self.code2url[shortUrl[-6:]]
