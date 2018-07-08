@@ -59,5 +59,5 @@ class Solution(object):
                 self.cur_ans = node
             find_ans(node.left)
             find_ans(node.right)
-        find_ans(root)
+        find_ans(root) # NOTE: remember to call the function rather than define it and leave it alone.
         return self.cur_ans
