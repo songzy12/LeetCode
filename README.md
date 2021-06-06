@@ -1,3 +1,3 @@
 # LeetCode
 
-Solutions for LeetCode Challenges.
+Solutions for LeetCode Problems: https://leetcode.com/problemset/all/
