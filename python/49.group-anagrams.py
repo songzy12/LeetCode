@@ -11,7 +11,7 @@ class Solution:
             if tuple(a) in m:
                 m[tuple(a)].append(s)
             else:
-                m[tuple(a)] = list((s,));
+                m[tuple(a)] = list((s,))
         for s in m:
             if len(m[s])>=2:
                 result += list(m[s])
