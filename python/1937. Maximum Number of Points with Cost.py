@@ -1,30 +1,29 @@
 # https://leetcode.com/contest/weekly-contest-250/problems/maximum-number-of-points-with-cost/
-#
-# TLE
+
 
 class Solution(object):
-    def maxPoints(self, points):
-        """
-        :type points: List[List[int]]
-        :rtype: int
-        """
-        m = len(points)
-        n = len(points[0])
-        dp = {}
+    def maxPoints(self, P: List[List[int]]) -> int:
+        m, n = len(P), len(P[0])
+        if m == 1: return max(P[0])
+        if n == 1: return sum(sum(x) for x in P)
 
-        def compute(i, j):
-            if (i, j) in dp:
-                return dp[i, j]
-            if i == m - 1:
-                return points[i][j]
+        def left(arr):
+            lft = [arr[0]] + [0] * (n - 1)
+            for i in range(1, n):
+                lft[i] = max(lft[i - 1] - 1, arr[i])
+            return lft
 
-            result = None
-            for s in range(n):
-                cur_result = points[i][j] + compute(i+1, s) - abs(j - s)
-                if not result:
-                    result = cur_result
-                else:
-                    result = max(result, cur_result)
-            dp[i, j] = result
-            return result
-        return max([compute(0, i) for i in range(n)])
+        def right(arr):
+            rgt = [0] * (n - 1) + [arr[-1]]
+            for i in range(n - 2, -1, -1):
+                rgt[i] = max(rgt[i + 1] - 1, arr[i])
+            return rgt
+
+        pre = P[0]
+        for i in range(m - 1):
+            lft, rgt, cur = left(pre), right(pre), [0] * n
+            for j in range(n):
+                cur[j] = P[i + 1][j] + max(lft[j], rgt[j])
+            pre = cur[:]
+
+        return max(pre)
