@@ -1,18 +1,22 @@
 # https://leetcode.com/contest/weekly-contest-251/problems/maximum-compatibility-score-sum/
-# 
-# Reference: https://github.com/bmc/munkres
+#
+# Reference: 
+# 1. https://github.com/bmc/munkres
+# 2. https://brc2.com/the-algorithm-workshop/
+# 3. https://www.topcoder.com/thrive/articles/Assignment%20Problem%20and%20Hungarian%20Algorithm
+# 4. https://cyberlab.engr.uconn.edu/wp-content/uploads/sites/2576/2018/09/Lecture_8.pdf
 
 from typing import Union, NewType, Sequence
 
 AnyNum = NewType('AnyNum', Union[int, float])
 Matrix = NewType('Matrix', Sequence[Sequence[AnyNum]])
 
+
 class Munkres:
     """
     Calculate the Munkres solution to the classical assignment problem.
     See the module documentation for usage.
     """
-
     def __init__(self):
         """Create a new instance"""
         self.C = None
@@ -24,7 +28,7 @@ class Munkres:
         self.marked = None
         self.path = None
 
-    def pad_matrix(self, matrix: Matrix, pad_value: int=0) -> Matrix:
+    def pad_matrix(self, matrix: Matrix, pad_value: int = 0) -> Matrix:
         """
         Pad a possibly non-square matrix to make it square.
         **Parameters**
@@ -85,12 +89,14 @@ class Munkres:
         done = False
         step = 1
 
-        steps = { 1 : self.__step1,
-                  2 : self.__step2,
-                  3 : self.__step3,
-                  4 : self.__step4,
-                  5 : self.__step5,
-                  6 : self.__step6 }
+        steps = {
+            1: self.__step1,
+            2: self.__step2,
+            3: self.__step3,
+            4: self.__step4,
+            5: self.__step5,
+            6: self.__step6
+        }
 
         while not done:
             try:
@@ -132,12 +138,11 @@ class Munkres:
                 # All values in this row are DISALLOWED. This matrix is
                 # unsolvable.
                 raise UnsolvableMatrix(
-                    "Row {0} is entirely DISALLOWED.".format(i)
-                )
+                    "Row {0} is entirely DISALLOWED.".format(i))
             minval = min(vals)
             # Find the minimum value for this row and subtract that minimum
             # from every element in the row.
-            for j in range(n):                
+            for j in range(n):
                 self.C[i][j] -= minval
         return 2
 
@@ -176,7 +181,7 @@ class Munkres:
                     count += 1
 
         if count >= n:
-            step = 7 # done
+            step = 7  # done
         else:
             step = 4
 
@@ -236,14 +241,14 @@ class Munkres:
             if row >= 0:
                 count += 1
                 path[count][0] = row
-                path[count][1] = path[count-1][1]
+                path[count][1] = path[count - 1][1]
             else:
                 done = True
 
             if not done:
                 col = self.__find_prime_in_row(path[count][0])
                 count += 1
-                path[count][0] = path[count-1][0]
+                path[count][0] = path[count - 1][0]
                 path[count][1] = col
 
         self.__convert_path(path, count)
@@ -259,7 +264,7 @@ class Munkres:
         lines.
         """
         minval = self.__find_smallest()
-        events = 0 # track actual changes to matrix
+        events = 0  # track actual changes to matrix
         for i in range(self.n):
             for j in range(self.n):
                 if self.row_covered[i]:
@@ -269,7 +274,7 @@ class Munkres:
                     self.C[i][j] -= minval
                     events += 1
                 if self.row_covered[i] and not self.col_covered[j]:
-                    events -= 2 # change reversed, no real difference
+                    events -= 2  # change reversed, no real difference
         if (events == 0):
             raise UnsolvableMatrix("Matrix cannot be solved!")
         return 4
@@ -283,7 +288,6 @@ class Munkres:
                     if minval > self.C[i][j]:
                         minval = self.C[i][j]
         return minval
-
 
     def __find_a_zero(self, i0: int = 0, j0: int = 0) -> Tuple[int, int]:
         """Find the first uncovered element with value 0"""
@@ -350,10 +354,9 @@ class Munkres:
 
         return col
 
-    def __convert_path(self,
-                       path: Sequence[Sequence[int]],
+    def __convert_path(self, path: Sequence[Sequence[int]],
                        count: int) -> None:
-        for i in range(count+1):
+        for i in range(count + 1):
             if self.marked[path[i][0]][path[i][1]] == 1:
                 self.marked[path[i][0]][path[i][1]] = 0
             else:
@@ -372,8 +375,10 @@ class Munkres:
                 if self.marked[i][j] == 2:
                     self.marked[i][j] = 0
 
+
 class Solution:
-    def maxCompatibilitySum(self, students: List[List[int]], mentors: List[List[int]]) -> int:
+    def maxCompatibilitySum(self, students: List[List[int]],
+                            mentors: List[List[int]]) -> int:
         def computeScore(l, r):
             res = 0
             for i in range(len(l)):
@@ -381,17 +386,16 @@ class Solution:
                     res += 1
             return res
 
-        cost_matrix = [[0 for i in range(len(students))] for j in range(len(mentors))]
+        cost_matrix = [[0 for i in range(len(students))]
+                       for j in range(len(mentors))]
         for i in range(len(mentors)):
             for j in range(len(students)):
                 cost_matrix[i][j] = -computeScore(mentors[i], students[j])
-        
-        m = Munkres()            
+
+        m = Munkres()
         indexes = m.compute(cost_matrix)
         total_cost = 0
         for r, c in indexes:
             x = cost_matrix[r][c]
             total_cost += x
         return -total_cost
-        
-        
