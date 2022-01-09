@@ -1,3 +1,4 @@
+# https://leetcode.com/problems/cut-off-trees-for-golf-event/
 class Solution(object):
     def cutOffTree(self, forest):
         """
@@ -6,7 +7,7 @@ class Solution(object):
         """
         if not forest or not forest[0]:
             return 0
-        
+
         hs = []
         for row in forest:
             hs.extend(filter(lambda x: x > 1, row))
@@ -14,7 +15,7 @@ class Solution(object):
 
         cur = [0, 0]
         cnt = 0
-        
+
         def walk(cur, h):
             q = [cur + [0]]
             visited = {}
@@ -24,8 +25,8 @@ class Solution(object):
                 if forest[x][y] == h:
                     forest[x][y] = 1
                     return [x, y], step
-                dx = [0,0,-1,1]
-                dy = [-1,1,0,0]
+                dx = [0, 0, -1, 1]
+                dy = [-1, 1, 0, 0]
                 for i in range(4):
                     _x = x + dx[i]
                     _y = y + dy[i]
@@ -41,22 +42,15 @@ class Solution(object):
         # you can walk through trees
         while len(hs):
             h = hs.pop(0)
-            
+
             cur, step = walk(cur, h)
-            # print cur, step
-            
             if step == -1:
                 return -1
             cnt += step
         return cnt
 
-# TLE
-# this is not the algorithm's fault
-# this is python's fault
 
-forest = [[2,3,4],
-          [0,0,5],
-          [8,7,6]]
-print Solution().cutOffTree(forest)
-        
-        
+forest = [[2, 3, 4],
+          [0, 0, 5],
+          [8, 7, 6]]
+print(Solution().cutOffTree(forest))
