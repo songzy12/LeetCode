@@ -1,3 +1,8 @@
+# https://leetcode.com/problems/maximum-employees-to-be-invited-to-a-meeting
+
+from collections import defaultdict
+
+
 class Solution:
     # each node can appear in at most one cycle or a path points to a cycle.
     # the answer would be
@@ -50,7 +55,8 @@ class Solution:
                 # we found a new circle
                 pos = cur_group.index(favorite[head])
                 circle_len[circle_cnt] = len(cur_group) - pos
-                circle_path_len_max[circle_cnt] = pos
+                circle_path_len_max[circle_cnt] = defaultdict(int)
+                circle_path_len_max[circle_cnt][favorite[head]] = pos
                 for node in cur_group[pos:]:
                     circle_id[node] = circle_cnt
                 circle_cnt += 1
@@ -58,12 +64,12 @@ class Solution:
                 # we found a known circle
                 cur_circle_path = len(cur_group)
                 cur_circle_id = circle_id[favorite[head]]
-                circle_path_len_max[cur_circle_id] = max(
-                    cur_circle_path, circle_path_len_max[cur_circle_id])
+                circle_path_len_max[cur_circle_id][favorite[head]] = max(
+                    cur_circle_path, circle_path_len_max[cur_circle_id][favorite[head]])
 
-        print(circle_cnt)
-        print(circle_len)
-        print(circle_path_len_max)
+        # print(circle_cnt)
+        # print(circle_len)
+        # print(circle_path_len_max)
 
         # From now on, there is no node with in-degree 0.
         while len(degree):
@@ -80,33 +86,34 @@ class Solution:
             if favorite[head] not in circle_id:
                 pos = cur_group.index(favorite[head])
                 circle_len[circle_cnt] = len(cur_group) - pos
-                circle_path_len_max[circle_cnt] = pos
+                circle_path_len_max[circle_cnt] = defaultdict(int)
+                circle_path_len_max[circle_cnt][favorite[head]] = pos
                 for node in cur_group[pos:]:
                     circle_id[node] = circle_cnt
                 circle_cnt += 1
 
-        # then let us compute the longest path points to pair circle
-        # the number of pair circles
-        # the length of longest non-pair circles
-        count_pair_circle = 0
-        pair_circle_path_len_max_1 = 0
-        # TODO(songzy): need to fix this.
-        pair_circle_path_len_max_2 = 0
+        # then let us compute the answer candidates
+        # 1. sum of length of pair circles with arms
+        # 2. the length of longest non-pair circles
+        pair_circles_with_arms = 0
         longest_circle = 0
         for circle in range(circle_cnt):
             if circle_len[circle] == 2:
-                pair_circle_path_len_max_1 = max(
-                    pair_circle_path_len_max_1, circle_path_len_max[circle])
-                count_pair_circle += 1
+                pair_circles_with_arms += sum(
+                    circle_path_len_max[circle].values()) + 2
             else:
                 longest_circle = max(longest_circle,   circle_len[circle])
 
-        print(longest_circle, pair_circle_path_len_max_1, count_pair_circle)
-        return max(longest_circle, pair_circle_path_len_max_1 + 2*count_pair_circle)
+        # print(longest_circle, pair_circles_with_arms)
+        return max(longest_circle, pair_circles_with_arms)
 
 
 favorite = [1, 0, 0, 2, 1, 4, 7, 8, 9, 6, 7, 10, 8]
-print(Solution().maximumInvitations(favorite))
+print(favorite)
+assert Solution().maximumInvitations(favorite) == 6
+print()
 
-# 0 1 2 3 4 5  6 7 8 9 10 11 12
-# 1 0 0 2 1 4  7 8 9 6 7 10 8
+#          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+favorite = [7, 0, 7, 13, 11, 6, 8, 5, 9, 8, 9, 14, 15, 7, 11, 6]
+print(favorite)
+assert Solution().maximumInvitations(favorite) == 11
