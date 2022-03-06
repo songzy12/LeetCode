@@ -5,9 +5,9 @@ from collections import defaultdict
 
 class Solution:
     # each node can appear in at most one cycle or a path points to a cycle.
-    # the answer would be
+    # the answer would be the maximum of
     # 1. length of the largest cycle.
-    # 2. lenght of all pair cycles + two longest path points to a pair cycle.
+    # 2. sum of length of pair circles with arms
     def maximumInvitations(self, favorite):
         degree = {k: 0 for k in range(len(favorite))}
         for person in favorite:
