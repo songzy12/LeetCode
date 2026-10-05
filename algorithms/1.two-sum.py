@@ -8,6 +8,12 @@
 class Solution:
 
     def twoSum(self, nums: list[int], target: int) -> list[int]:
+        """
+        Given an array of integers `nums` and an integer `target`, return the
+        indices of the two numbers such that they add up to `target`.
+        You may assume that each input would have exactly one solution, and you
+        may not use the same element twice.
+        """
         d = {}
         for i, num in enumerate(nums):
             if target - num in d:
@@ -17,10 +23,10 @@ class Solution:
 
 
 if __name__ == "__main__":
-    num = [3, 2, 4]
+    nums = [3, 2, 4]
     target = 6
-    print(Solution().twoSum(num, target))
+    print(Solution().twoSum(nums, target))
 
-    num = [3, 3]
+    nums = [3, 3]
     target = 6
-    print(Solution().twoSum(num, target))
+    print(Solution().twoSum(nums, target))
