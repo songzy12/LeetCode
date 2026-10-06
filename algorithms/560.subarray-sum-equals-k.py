@@ -1,27 +1,28 @@
-class Solution(object):
-    def subarraySum(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
-        from collections import defaultdict
-        m = defaultdict(int)
-        
-        sum_ = 0
-        m[sum_] = 1
-        count = 0
+# https://leetcode.com/problems/subarray-sum-equals-k/description/
+
+from collections import defaultdict
+from typing import List
+
+
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        prefix_sum_cnt = defaultdict(int)
+
+        # Init for the empty prefix.
+        prefix_sum = 0
+        prefix_sum_cnt[prefix_sum] = 1
+
+        ans = 0
         for num in nums:
-            sum_ += num
-            count += m[sum_ - k]
-            m[sum_] += 1
-        return count
+            prefix_sum += num
 
-nums = [-624,-624,-624,-624,-624,-624,-624,-624,-624,-624]
-k = -624
+            ans += prefix_sum_cnt[prefix_sum - k]
+            prefix_sum_cnt[prefix_sum] += 1
+        return ans
 
-# prefix sum can reduce brute force O(n^3) to O(n^2)
-# we can still use map to accelerate
 
-# we need to index of sum t+k to be greater than t
-# the key is to update the result during the computation
+if __name__ == "__main__":
+    nums = [-624, -624, -624, -624, -624, -624, -624, -624, -624, -624]
+    k = -624
+
+    print(Solution().subarraySum(nums, k))
