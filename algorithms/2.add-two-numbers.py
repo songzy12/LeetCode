@@ -1,11 +1,6 @@
 # https://leetcode.com/problems/add-two-numbers/description/
 
-
-class ListNode:
-
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+from List import ListNode, printList
 
 
 class Solution:
@@ -47,13 +42,6 @@ class Solution:
     def computeValAndCarry(self, val1, val2, carry):
         val = val1 + val2 + carry
         return val % 10, val // 10
-
-
-def printList(head):
-    while head:
-        print(head.val, end=" ")
-        head = head.next
-    print()
 
 
 if __name__ == "__main__":

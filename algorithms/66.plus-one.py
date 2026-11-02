@@ -1,8 +1,24 @@
-class Solution:
-    # @param digits, a list of integer digits
-    # @return a list of integer digits
-    def plusOne(self, digits):
-        return [int(x) for x in str(int("".join([str(n) for n in digits]))+1)]
+# https://leetcode.com/problems/plus-one/description/
 
-digits=[1,2,3]
-print(Solution().plusOne(digits))
+
+class Solution:
+
+    def plusOne(self, digits):
+        carry = 0
+
+        for i in range(len(digits) - 1, -1, -1):
+            if i == len(digits) - 1:
+                digits[i] += 1
+
+            digits[i] += carry
+            carry = digits[i] // 10
+            digits[i] %= 10
+
+        if carry:
+            digits = [carry] + digits
+        return digits
+
+
+if __name__ == "__main__":
+    digits = [1, 2, 3]
+    print(Solution().plusOne(digits))
